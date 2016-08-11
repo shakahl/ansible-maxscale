@@ -230,7 +230,9 @@ router=readwritesplit
 servers={{ router.servers | join(',') }}
 user={{ router.user }}
 passwd={{ router.passwd }}
+{% if router.max_slave_connections is defined %}
 max_slave_connections={{ router.max_slave_connections }}
+{% endif %}
 {% if router.detect_replication_lag is defined %}
 detect_replication_lag={{ router.detect_replication_lag }}
 {% if router.detect_replication_lag == 1 and router.max_slave_replication_lag is defined %}
@@ -253,7 +255,9 @@ version_string={{ router.version_string }}
 type=listener
 service={{ router.name }}
 protocol=MySQLClient
+{% if router.listener_port is defined %}
 port={{ router.listener_port }}
+{% endif %}
 address={{ router.listener_address | default('0.0.0.0') }}
 
 [{{ router.name }} Monitor]

@@ -7,8 +7,9 @@
 
 - name: Add MariaDB Maxscale repo
   apt_repository: >
-    repo='deb http://downloads.mariadb.com/enterprise/{{ maxscale_download_token }}/mariadb-maxscale/{{ maxscale_version }}/debian {{ ansible_distribution_release }} main'
+    repo='deb http://downloads.mariadb.com/enterprise/{{ maxscale_download_token }}/mariadb-maxscale/{{ maxscale_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+    filename='mariadb-maxscale'
     state=present
 
 - name: Install Maxscale
-  apt: pkg=maxscale state=present update_cache=yes
+  apt: name=maxscale state=present update_cache=yes

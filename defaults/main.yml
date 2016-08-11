@@ -27,7 +27,7 @@ maxscale_servers: []
 #     monitorpw: 'secure_password' # Overwrite global settings
 
 
-maxscale_rw_routers: []
+maxscale_rwsplit_routers: []
   #  - name:
   #    servers:
   #      - 'server1'

@@ -11,7 +11,7 @@
   assert:
     that:
       - "maxscale_version in maxscale_available_version"
-      - "ansible_service_mgr == 'sysvinit'"
+      #- "ansible_service_mgr == 'sysvinit'"
 
 - name: Installation
   include: install.yml
@@ -21,7 +21,7 @@
 #  when: ansible_service_mgr == 'systemd'
 
 - name: Deploy maxcale configuration
-  template: src=etc/maxscale.cnf.j2 dest=/etc/maxscale.cnf mode=0640
+  template: src=etc/maxscale.cnf.j2 dest=/etc/maxscale.cnf mode=0644
   notify: restart maxscale
 
 - name: Prepare logrotate
