@@ -1,0 +1,13 @@
+{
+   "name": "shakahl.ansible-maxscale",
+   "version": "0.0.0",
+   "description": "An Ansible role that installs MaxScale on Ubuntu or Debian based systems.",
+   "author": "Soma Szelpal <szelpalsoma@gmail.com>",
+   "bugs": {
+      "url": "https://github.com/shakahl/ansible-maxscale/issues"
+   },
+   "keywords": [
+      "database"
+   ],
+   "license": "MIT"
+}

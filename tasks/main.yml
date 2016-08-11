@@ -1,0 +1,35 @@
+---
+# tasks file for ansible-maxscale
+
+
+- name: Check if download token is specified
+  fail: msg="maxscale_download_token is not specified"
+  when: maxscale_download_token == False
+
+
+- name: Check Maxscale version
+  assert:
+    that:
+      - "maxscale_version in maxscale_available_version"
+      - "ansible_service_mgr == 'sysvinit'"
+
+- name: Installation
+  include: install.yml
+
+#- name: INCLUDE | Fix systemd
+#  include: fix-systemd.yml
+#  when: ansible_service_mgr == 'systemd'
+
+- name: Deploy maxcale configuration
+  template: src=etc/maxscale.cnf.j2 dest=/etc/maxscale.cnf mode=0640
+  notify: restart maxscale
+
+- name: Prepare logrotate
+  template: src=etc/logrotate.d/maxscale.j2 dest=/etc/logrotate.d/maxscale
+  when: maxscale_prepare_logrotate == True
+
+- name: Create cache directory
+  file: path={{ maxscale_cachedir }} owner={{ maxscale_owner }} group={{ maxscale_group }} mode=0755 state=directory
+
+- name: Ensure Maxscale is enabled and started
+  service: name=maxscale state=started enabled=yes

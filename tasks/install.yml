@@ -1,0 +1,14 @@
+---
+
+- name: Add MariaDB GPG key
+  apt_key: >
+    url=http://downloads.mariadb.com/enterprise/{{ maxscale_download_token }}/mariadb-maxscale/MariaDB-MaxScale-GPG-KEY
+    state=present
+
+- name: Add MariaDB Maxscale repo
+  apt_repository: >
+    repo='deb http://downloads.mariadb.com/enterprise/{{ maxscale_download_token }}/mariadb-maxscale/{{ maxscale_version }}/debian {{ ansible_distribution_release }} main'
+    state=present
+
+- name: Install Maxscale
+  apt: pkg=maxscale state=present update_cache=yes

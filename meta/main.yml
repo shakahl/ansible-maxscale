@@ -1,0 +1,26 @@
+---
+
+galaxy_info:
+  author: shakahl
+  description: An Ansible role that installs MaxScale on Ubuntu or Debian based systems.
+  issue_tracker_url: https://github.com/shakahl/ansible-maxscale/issues
+  license: MIT
+  min_ansible_version: 1.9
+  github_branch: master
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - wily
+        - vivid
+        - utopic
+        - trusty
+    - name: Debian
+      versions:
+        - jessie
+        - wheezy
+        - squeeze
+  galaxy_tags:
+    - database
+dependencies: []
+
