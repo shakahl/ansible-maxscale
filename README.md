@@ -2,26 +2,80 @@
 
 An Ansible role that installs MaxScale on Ubuntu or Debian based systems.
 
-## Requirements
+Role Variables
+--------------
 
-None
+### Global
 
-## Role Variables
+- `maxscale_version`:
+- `maxscale_threads`:
+- `maxscale_log_messages`:
+- `maxscale_log_trace`:
+- `maxscale_log_debug`:
+- `maxscale_logdir`:
+- `maxscale_cachedir`:
+- `maxscale_piddir`:
 
-Available variables are listed below, along with default values:
+### Servers
 
-    TODO
+- `maxscale_servers`:
 
-## Dependencies
+Example:
 
-None
+```
+maxscale_servers:
+  - name: 'myserver1'
+    address: '10.0.0.1'
+    port: '3306'
+    protocol: 'MySQLBackend'
+    serv_weight: 1
+    monitoruser: 'maxscale' # Overwrite global settings
+    monitorpw: 'secure_password' # Overwrite global settings
+```
 
-## Example Playbook
+### Routers
 
-    - hosts: all
+- `maxscale_rw_routers`:
+
+Example:
+
+```
+maxscale_rw_routers:
+  - name:
+    servers:
+      - 'server1'
+      - 'server2'
+    user: 'maxscale'
+    passwd: 'password'
+```
+
+### Listeners
+
+- `maxscale_cli_listener`:
+- `maxscale_cli_listener_address`:
+- `maxscale_cli_listener_port`:
+- `maxscale_debug_listener`:
+- `maxscale_debug_listener_address`:
+- `maxscale_debug_listener_port`:
+
+Dependencies
+------------
+
+None.
+
+Example Playbook
+----------------
+
+    - hosts: maxscale
       roles:
-        - { role: shakahl.ansible-maxscale }
+         - { role: shakahl.maxscale }
 
-## License
+License
+-------
 
-MIT
+GPLv2
+
+Author Information
+------------------
+
+- GitHub: [@shakahl](https://github.com/shakahl)
