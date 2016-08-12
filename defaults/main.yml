@@ -2,11 +2,9 @@
 # defaults file for ansible-maxscale
 
 maxscale_download_token: False
-
 maxscale_prepare_logrotate: False
-
 maxscale_version: 'latest'
-maxscale_threads: 4
+maxscale_threads: 1
 maxscale_log_messages: 1
 maxscale_log_trace: 0
 maxscale_log_debug: 0
@@ -15,35 +13,63 @@ maxscale_cachedir: '/var/cache/maxscale'
 maxscale_piddir: '/var/run/maxscale'
 #maxscale_language
 
-maxscale_servers: []
-# Example:
-# maxscale_servers:
-#   - name: 'myserver1'
-#     address: '10.0.0.1'
-#     port: '3306'
-#     protocol: 'MySQLBackend'
-#     serv_weight: 1
-#     monitoruser: 'maxscale' # Overwrite global settings
-#     monitorpw: 'secure_password' # Overwrite global settings
+maxscale_config_defaults:
 
+  maxscale:
+      threads: '{{ maxscale_threads }}'
 
-maxscale_rwsplit_routers: []
-  #  - name:
-  #    servers:
-  #      - 'server1'
-  #      - 'server2'
-  #    user: 'maxscale'
-  #    passwd: 'password'
-  #
-  #
+  # server1:
+  #     type: server
+  #     address: 127.0.0.1
+  #     port: '3306'
+  #     protocol: MySQLBackend
 
+  # 'MySQL Monitor':
+  #     type: monitor
+  #     module: mysqlmon
+  #     servers: server1
+  #     user: myuser
+  #     passwd: mypwd
+  #     monitor_interval: '10000'
 
-# CLI Listener
-maxscale_cli_listener: true
-maxscale_cli_listener_address: '127.0.0.1'
-maxscale_cli_listener_port: 6603
+  # 'Read-Only Service':
+  #     type: service
+  #     router: readconnroute
+  #     servers: server1
+  #     user: myuser
+  #     passwd: mypwd
+  #     router_options: slave
 
-# Debug Listener
-maxscale_debug_listener: true
-maxscale_debug_listener_address: '0.0.0.0'
-maxscale_debug_listener_port: 4442
+  # 'Read-Write Service':
+  #     type: service
+  #     router: readwritesplit
+  #     servers: server1
+  #     user: myuser
+  #     passwd: mypwd
+  #     max_slave_connections: 100%
+
+  # 'MaxAdmin Service':
+  #     type: service
+  #     router: cli
+
+  # 'Read-Only Listener':
+  #     type: listener
+  #     service: 'Read-Only Service'
+  #     protocol: MySQLClient
+  #     port: '4008'
+
+  # 'Read-Write Listener':
+  #     type: listener
+  #     service: 'Read-Write Service'
+  #     protocol: MySQLClient
+  #     port: '4006'
+
+  # 'MaxAdmin Listener':
+  #     type: listener
+  #     service: 'MaxAdmin Service'
+  #     protocol: maxscaled
+  #     port: '6603'
+
+maxscale_config: {}
+
+maxscale_config_sections: {}

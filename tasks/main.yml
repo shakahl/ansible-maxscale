@@ -1,6 +1,10 @@
 ---
 # tasks file for ansible-maxscale
 
+- name: Merging options
+  set_fact:
+    maxscale_config_sections: "{{ maxscale_config_sections | combine(maxscale_config_defaults, maxscale_config) }}"
+  #when: maxscale_config is defined
 
 - name: Check if download token is specified
   fail: msg="maxscale_download_token is not specified"

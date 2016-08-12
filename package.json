@@ -1,6 +1,6 @@
 {
    "name": "shakahl.ansible-maxscale",
-   "version": "0.0.3",
+   "version": "0.0.2",
    "description": "An Ansible role that installs MaxScale on Ubuntu or Debian based systems.",
    "author": "Soma Szelpal <szelpalsoma@gmail.com>",
    "bugs": {

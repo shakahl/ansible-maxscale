@@ -7,56 +7,70 @@ Role Variables
 
 ### Global
 
-- `maxscale_version`:
-- `maxscale_threads`:
-- `maxscale_log_messages`:
-- `maxscale_log_trace`:
-- `maxscale_log_debug`:
-- `maxscale_logdir`:
-- `maxscale_cachedir`:
-- `maxscale_piddir`:
+- `maxscale_download_token: False` - required
+- `maxscale_prepare_logrotate: False`
+- `maxscale_version: 'latest'`
+- `maxscale_threads: 1`
+- `maxscale_log_messages: 1`
+- `maxscale_log_trace: 0`
+- `maxscale_log_debug: 0`
+- `maxscale_logdir: '/var/log/maxscale'`
+- `maxscale_cachedir: '/var/cache/maxscale'`
+- `maxscale_piddir: '/var/run/maxscale'`
+- `maxscale_config: {...}`
 
-### Servers
-
-- `maxscale_servers`:
+### Configuration
 
 Example:
 
-```
-maxscale_servers:
-  - name: 'myserver1'
-    address: '10.0.0.1'
+```yaml
+maxscale_config:
+
+  'server1':
+    type: server
+    address: 'server1.local'
     port: '3306'
-    protocol: 'MySQLBackend'
-    serv_weight: 1
-    monitoruser: 'maxscale' # Overwrite global settings
-    monitorpw: 'secure_password' # Overwrite global settings
+    protocol: MySQLBackend
+
+  'server2':
+    type: server
+    address: 'server2.local'
+    port: '3306'
+    protocol: MySQLBackend
+
+  'MySQL Monitor':
+    type: monitor
+    module: mysqlmon
+    servers: 'server1,server2'
+    user: 'example_user'
+    passwd: 'example_pass'
+    monitor_interval: '10000'
+
+  'Read-Write Service':
+    type: service
+    router: readwritesplit
+    servers: 'server1,server2'
+    user: 'example_user'
+    passwd: 'example_pass'
+    max_slave_connections: 100%
+
+  'MaxAdmin Service':
+    type: service
+    router: cli
+
+  'Read-Write Listener':
+    type: listener
+    service: 'Read-Write Service'
+    protocol: MySQLClient
+    port: '4006'
+
+  'MaxAdmin Listener':
+    type: listener
+    service: 'MaxAdmin Service'
+    protocol: maxscaled
+    port: '6603'
+
 ```
-
-### Routers
-
-- `maxscale_rw_routers`:
-
-Example:
-
-```
-maxscale_rw_routers:
-  - name:
-    servers:
-      - 'server1'
-      - 'server2'
-    user: 'maxscale'
-    passwd: 'password'
-```
-
-### Listeners
-
-- `maxscale_cli_listener`:
-- `maxscale_cli_listener_address`:
-- `maxscale_cli_listener_port`:
-- `maxscale_debug_listener`:
-- `maxscale_debug_listener_address`:
-- `maxscale_debug_listener_port`:
 
 Dependencies
 ------------
@@ -68,7 +82,7 @@ Example Playbook
 
     - hosts: maxscale
       roles:
-         - { role: shakahl.maxscale }
+         - { role: shakahl.ansible-maxscale }
 
 License
 -------
